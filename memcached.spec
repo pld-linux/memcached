@@ -14,8 +14,9 @@ Group:		Networking/Daemons
 Source0:	http://www.danga.com/memcached/dist/%{name}-%{version}.tar.gz
 # Source0-md5:	f42301c02e4223a1f2298dd3d3c30d90
 URL:		http://www.danga.com/memcached/
-BuildRequires:	libevent-devel
+BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	libevent-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
