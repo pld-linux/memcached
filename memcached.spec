@@ -3,7 +3,7 @@
 # but gotta test it first :-)
 #
 Summary:	A high-performance, distributed memory object caching system
-Summary(pl):	Rozproszony system cachowania obiektów o wysokiej wydajno¶ci
+Summary(pl):	Rozproszony system cache'owania obiektów o wysokiej wydajno¶ci
 Name:		memcached
 Version:	1.1.11
 Release:	0.1
@@ -23,7 +23,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 A high-performance, distributed memory object caching system.
 
 %description -l pl
-Rozproszony system cachowania obiektów o wysokiej wydajno¶ci.
+Rozproszony system cache'owania obiektów o wysokiej wydajno¶ci.
 
 %prep
 %setup -q
