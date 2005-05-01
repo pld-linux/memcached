@@ -1,18 +1,17 @@
-#
-# TODO: init script (see scripts/),
-# but gotta test it first :-)
+# TODO
+# - init script (see scripts/), but gotta test it first :-)
 #
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl):	Rozproszony system cache'owania obiektów o wysokiej wydajno¶ci
 Name:		memcached
-Version:	1.1.11
+Version:	1.1.12
 Release:	0.1
 Epoch:		0
 License:	GPL?
 Vendor:		Brad Fitzpatrick <brad@danga.com>
 Group:		Networking/Daemons
 Source0:	http://www.danga.com/memcached/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	f42301c02e4223a1f2298dd3d3c30d90
+# Source0-md5:	a1236dad33e9ac6c36d53faa8da61780
 URL:		http://www.danga.com/memcached/
 BuildRequires:	autoconf
 BuildRequires:	automake
