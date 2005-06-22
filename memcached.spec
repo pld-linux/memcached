@@ -37,8 +37,8 @@ Rozproszony system cache'owania obiektów o wysokiej wydajno¶ci.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man1}
-install memcached $RPM_BUILD_ROOT%{_bindir}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man1}
+install memcached $RPM_BUILD_ROOT%{_sbindir}
 install doc/memcached.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 %clean
