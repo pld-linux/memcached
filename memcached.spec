@@ -5,7 +5,7 @@ Summary:	A high-performance, distributed memory object caching system
 Summary(pl):	Rozproszony system cache'owania obiektów o wysokiej wydajno¶ci
 Name:		memcached
 Version:	1.1.12
-Release:	0.1
+Release:	0.2
 Epoch:		0
 License:	GPL?
 Vendor:		Brad Fitzpatrick <brad@danga.com>
@@ -47,5 +47,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS README TODO doc/*.txt
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_sbindir}/*
 %{_mandir}/man1/*
