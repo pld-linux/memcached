@@ -7,7 +7,7 @@ Name:		memcached
 Version:	1.1.12
 Release:	0.2
 Epoch:		0
-License:	GPL?
+License:	BSD
 Vendor:		Brad Fitzpatrick <brad@danga.com>
 Group:		Networking/Daemons
 Source0:	http://www.danga.com/memcached/dist/%{name}-%{version}.tar.gz
