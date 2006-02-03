@@ -1,0 +1,6 @@
+# Customized settings
+
+# Define nice level
+SERVICE_RUN_NICE_LEVEL="+0"
+
+MEMCACHED_OPTS="-l 127.0.0.1"
