@@ -10,9 +10,11 @@
 # pidfile:      /var/run/memcached.pid
 #
 
-
 # Source function library
 . /etc/rc.d/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
 
 # Get service config
 [ -f /etc/sysconfig/memcached ] && . /etc/sysconfig/memcached
@@ -24,7 +26,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/memcached ]; then
 		msg_starting memcached
-		daemon /usr/sbin/memcached -d -u nobody
+		daemon /usr/sbin/memcached -d -u nobody $MEMCACHED_OPTS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/memcached
 	else
@@ -34,7 +36,7 @@ case "$1" in
   stop)
 	if [ -f /var/lock/subsys/memcached ]; then
 		msg_stopping memcached
-		killproc --pidfile clamav/memcached.pid memcached
+		killproc --pidfile memcached.pid memcached
 		rm -f /var/run/memcached.pid /var/lock/subsys/memcached >/dev/null 2>&1
 	else
 		msg_not_running memcached
