@@ -1,6 +1,24 @@
-# Customized settings
+# Customized settings for memcached
 
 # Define nice level
 SERVICE_RUN_NICE_LEVEL="+0"
 
-MEMCACHED_OPTS="-l 127.0.0.1"
+# Specify memory usage in megabytes (do not use letters)
+# 64MB is default
+#MEMUSAGE="64"
+
+# User to run as
+#MEMCACHED_RUNAS="nobody"
+
+# Specify maximum number of concurrent connections
+# 1024 is default
+#MAXCONN="1024"
+
+# Listen for connections on what address?
+#LISTENON="127.0.0.1"
+
+# Listen for connections on what port?
+#PORT="11211"
+
+# other options not defined earlier
+#MEMCACHED_OPTS=""

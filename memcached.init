@@ -16,6 +16,12 @@
 # Get network config
 . /etc/sysconfig/network
 
+MEMUSAGE="64"
+MEMCACHED_RUNAS="nobody"
+MAXCONN="1024"
+LISTENON="127.0.0.1"
+PORT="11211"
+
 # Get service config
 [ -f /etc/sysconfig/memcached ] && . /etc/sysconfig/memcached
 
@@ -26,7 +32,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/memcached ]; then
 		msg_starting memcached
-		daemon /usr/sbin/memcached -d -u nobody $MEMCACHED_OPTS
+		daemon /usr/sbin/memcached -d -p $PORT -l $LISTENON -m $MEMUSAGE -c $MAXCONN -u $MEMCACHED_RUNAS $MEMCACHED_OPTS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/memcached
 	else
@@ -36,7 +42,7 @@ case "$1" in
   stop)
 	if [ -f /var/lock/subsys/memcached ]; then
 		msg_stopping memcached
-		killproc --pidfile memcached.pid memcached
+		killproc memcached
 		rm -f /var/run/memcached.pid /var/lock/subsys/memcached >/dev/null 2>&1
 	else
 		msg_not_running memcached
