@@ -1,8 +1,13 @@
+# TODO
+# - memcached has -P option for pid, but root privs are dropped before
+#   pid is written, so either run memcached as new uid or hack code to
+#   write pidfile before changing uid, as rc-script removes pid on
+#   shutdown anyway.
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl):	Rozproszony system cache'owania obiektów o wysokiej wydajno¶ci
 Name:		memcached
 Version:	1.1.12
-Release:	1
+Release:	2
 License:	BSD
 Vendor:		Brad Fitzpatrick <brad@danga.com>
 Group:		Networking/Daemons
