@@ -9,7 +9,6 @@ Name:		memcached
 Version:	1.1.12
 Release:	2
 License:	BSD
-Vendor:		Brad Fitzpatrick <brad@danga.com>
 Group:		Networking/Daemons
 Source0:	http://www.danga.com/memcached/dist/%{name}-%{version}.tar.gz
 # Source0-md5:	a1236dad33e9ac6c36d53faa8da61780
@@ -19,7 +18,9 @@ URL:		http://www.danga.com/memcached/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libevent-devel
-BuildRequires:	rpmbuild(macros) >= 1.228
+BuildRequires:	rpmbuild(macros) >= 1.268
+Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
