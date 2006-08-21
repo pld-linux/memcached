@@ -7,7 +7,7 @@ Summary:	A high-performance, distributed memory object caching system
 Summary(pl):	Rozproszony, wysokiej wydajno¶ci system cache'owania obiektów
 Name:		memcached
 Version:	1.1.12
-Release:	2
+Release:	3
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://www.danga.com/memcached/dist/%{name}-%{version}.tar.gz
@@ -17,7 +17,7 @@ Source2:	%{name}.sysconfig
 URL:		http://www.danga.com/memcached/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libevent-devel
+BuildRequires:	libevent-devel >= 1.1
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
