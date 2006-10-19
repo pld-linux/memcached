@@ -25,10 +25,7 @@ PORT="11211"
 # Get service config
 [ -f /etc/sysconfig/memcached ] && . /etc/sysconfig/memcached
 
-RETVAL=0
-# See how we were called.
-case "$1" in
-  start)
+start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/memcached ]; then
 		msg_starting memcached
@@ -38,8 +35,9 @@ case "$1" in
 	else
 		msg_already_running memcached
 	fi
-	;;
-  stop)
+}
+
+stop() {
 	if [ -f /var/lock/subsys/memcached ]; then
 		msg_stopping memcached
 		killproc memcached
@@ -47,11 +45,20 @@ case "$1" in
 	else
 		msg_not_running memcached
 	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
 	;;
   restart)
-	$0 stop
-	$0 start
-	exit $?
+	stop
+	start
 	;;
   status)
 	status memcached
