@@ -4,7 +4,7 @@
 #   write pidfile before changing uid, as rc-script removes pid on
 #   shutdown anyway.
 Summary:	A high-performance, distributed memory object caching system
-Summary(pl.UTF-8):   Rozproszony, wysokiej wydajności system cache'owania obiektów
+Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
 Version:	1.1.12
 Release:	4
