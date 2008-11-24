@@ -8,17 +8,15 @@ SERVICE_RUN_NICE_LEVEL="+0"
 #MEMUSAGE="64"
 
 # User to run as
-#MEMCACHED_RUNAS="nobody"
+#MEMCACHED_RUNAS="memcached"
 
 # Specify maximum number of concurrent connections
 # 1024 is default
 #MAXCONN="1024"
 
 # Listen for connections on what address?
-#LISTENON="127.0.0.1"
-
-# Listen for connections on what port?
-#PORT="11211"
+# Format: IP:PORT, IP2:PORT2
+LISTEN="127.0.0.1:11211"
 
 # other options not defined earlier
 #MEMCACHED_OPTS=""
