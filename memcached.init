@@ -17,20 +17,33 @@
 . /etc/sysconfig/network
 
 MEMUSAGE="64"
-MEMCACHED_RUNAS="nobody"
+MEMCACHED_RUNAS="memcached"
 MAXCONN="1024"
-LISTENON="127.0.0.1"
-PORT="11211"
+LISTEN="127.0.0.1:11211"
 
 # Get service config
 [ -f /etc/sysconfig/memcached ] && . /etc/sysconfig/memcached
 
+if [ "$LISTENON" -a "$PORT" ]; then
+	# backward compat config
+	LISTEN="$LISTENON:$PORT"
+fi
+
 start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/memcached ]; then
-		msg_starting memcached
-		daemon /usr/sbin/memcached -d -p $PORT -l $LISTENON -m $MEMUSAGE -c $MAXCONN -u $MEMCACHED_RUNAS $MEMCACHED_OPTS
-		RETVAL=$?
+		local listen ip port ret=0
+		for listen in $LISTEN; do
+			ip=${listen%:*}
+			port=${listen##*:}
+			msg_starting "memcached ($ip:$port)"
+			pidfile=/var/run/memcached/"$ip.$port.pid"
+			daemon --pidfile $pidfile --user $MEMCACHED_RUNAS \
+				/usr/sbin/memcached -d -P $pidfile -l $ip -p $port \
+				-m $MEMUSAGE -c $MAXCONN -u $MEMCACHED_RUNAS $MEMCACHED_OPTS
+			ret=$?
+			[ $ret = 0 ] || RETVAL=$?
+		done
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/memcached
 	else
 		msg_already_running memcached
@@ -39,9 +52,15 @@ start() {
 
 stop() {
 	if [ -f /var/lock/subsys/memcached ]; then
-		msg_stopping memcached
-		killproc memcached
-		rm -f /var/run/memcached.pid /var/lock/subsys/memcached >/dev/null 2>&1
+		local listen ip port
+		for listen in $LISTEN; do
+			ip=${listen%:*}
+			port=${listen##*:}
+			msg_stopping "memcached ($ip:$port)"
+			pidfile=/var/run/memcached/"$ip.$port.pid"
+			killproc --pidfile $pidfile memcached
+		done
+		rm -f /var/lock/subsys/memcached >/dev/null 2>&1
 	else
 		msg_not_running memcached
 	fi
