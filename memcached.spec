@@ -2,7 +2,7 @@ Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
 Version:	1.2.6
-Release:	1
+Release:	2
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://www.danga.com/memcached/dist/%{name}-%{version}.tar.gz
@@ -21,7 +21,7 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires:	rc-scripts
+Requires:	rc-scripts >= 0.4.1.23
 Provides:	group(memcached)
 Provides:	user(memcached)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
