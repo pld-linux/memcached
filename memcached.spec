@@ -1,12 +1,12 @@
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
-Version:	1.4.0
-Release:	2
+Version:	1.4.1
+Release:	1
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://memcached.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	d7651ecb8bf345144cb17900d9a46c85
+# Source0-md5:	fb1b7e9fcf47b95c5ad3bbeb76342088
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.danga.com/memcached/
