@@ -1,12 +1,12 @@
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
-Version:	1.4.1
+Version:	1.4.2
 Release:	1
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://memcached.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	fb1b7e9fcf47b95c5ad3bbeb76342088
+# Source0-md5:	31caa3e74f2714ba49475b1df44bc315
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.danga.com/memcached/
@@ -80,7 +80,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS README TODO doc/*.txt
+%doc AUTHORS README doc/*.txt
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_sbindir}/%{name}
