@@ -9,7 +9,7 @@ Source0:	http://memcached.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	83c6cc6bad9612536b5acbbbddab3eb3
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-URL:		http://www.danga.com/memcached/
+URL:		http://memcached.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libevent-devel >= 1.1
