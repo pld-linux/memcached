@@ -1,4 +1,3 @@
-diff -urN --exclude *.m4 memcached-1.4.4/Makefile.am repcached-2.2-1.4.4/Makefile.am
 --- memcached-1.4.4/Makefile.am	Fri Oct 30 04:24:52 2009
 +++ repcached-2.2-1.4.4/Makefile.am	Tue Feb  9 23:02:45 2010
 @@ -31,6 +31,10 @@
@@ -12,8 +11,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/Makefile.am repcached-2.2-1.4.4/Makefil
  memcached_debug_SOURCES = $(memcached_SOURCES)
  memcached_CPPFLAGS = -DNDEBUG
  memcached_debug_LDADD = @PROFILER_LDFLAGS@
-diff -urN --exclude *.m4 memcached-1.4.4/Makefile.in repcached-2.2-1.4.4/Makefile.in
-diff -urN --exclude *.m4 memcached-1.4.4/assoc.c repcached-2.2-1.4.4/assoc.c
 --- memcached-1.4.4/assoc.c	Sat Oct 24 00:38:01 2009
 +++ repcached-2.2-1.4.4/assoc.c	Tue Feb  9 23:02:45 2010
 @@ -258,3 +258,51 @@
@@ -68,7 +65,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/assoc.c repcached-2.2-1.4.4/assoc.c
 +    return(b);
 +}
 +#endif /* USE_REPLICATION */
-diff -urN --exclude *.m4 memcached-1.4.4/assoc.h repcached-2.2-1.4.4/assoc.h
 --- memcached-1.4.4/assoc.h	Sun Aug 30 03:00:58 2009
 +++ repcached-2.2-1.4.4/assoc.h	Tue Feb  9 23:02:45 2010
 @@ -7,3 +7,6 @@
@@ -78,8 +74,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/assoc.h repcached-2.2-1.4.4/assoc.h
 +#ifdef USE_REPLICATION
 +char *assoc_key_snap(int *n);
 +#endif /*USE_REPLICATION*/
-diff -urN --exclude *.m4 memcached-1.4.4/config.guess repcached-2.2-1.4.4/config.guess
-diff -urN --exclude *.m4 memcached-1.4.4/config.h.in repcached-2.2-1.4.4/config.h.in
 --- memcached-1.4.4/config.h.in	Fri Nov 27 09:34:56 2009
 +++ repcached-2.2-1.4.4/config.h.in	Wed Feb 10 19:12:46 2010
 @@ -99,6 +99,9 @@
@@ -92,9 +86,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/config.h.in repcached-2.2-1.4.4/config.
  /* Version number of package */
  #undef VERSION
  
-diff -urN --exclude *.m4 memcached-1.4.4/config.sub repcached-2.2-1.4.4/config.sub
-diff -urN --exclude *.m4 memcached-1.4.4/configure repcached-2.2-1.4.4/configure
-diff -urN --exclude *.m4 memcached-1.4.4/configure.ac repcached-2.2-1.4.4/configure.ac
 --- memcached-1.4.4/configure.ac	Wed Nov 25 03:40:29 2009
 +++ repcached-2.2-1.4.4/configure.ac	Tue Feb  9 23:02:45 2010
 @@ -382,6 +382,18 @@
@@ -116,8 +107,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/configure.ac repcached-2.2-1.4.4/config
  AC_CHECK_FUNCS(mlockall)
  AC_CHECK_FUNCS(getpagesizes)
  AC_CHECK_FUNCS(memcntl)
-diff -urN --exclude *.m4 memcached-1.4.4/doc/Makefile repcached-2.2-1.4.4/doc/Makefile
-diff -urN --exclude *.m4 memcached-1.4.4/items.c repcached-2.2-1.4.4/items.c
 --- memcached-1.4.4/items.c	Sat Oct 24 00:38:01 2009
 +++ repcached-2.2-1.4.4/items.c	Tue Feb  9 23:02:45 2010
 @@ -155,6 +155,9 @@
@@ -145,7 +134,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/items.c repcached-2.2-1.4.4/items.c
  
      item_link_q(it);
  
-diff -urN --exclude *.m4 memcached-1.4.4/memcached.c repcached-2.2-1.4.4/memcached.c
 --- memcached-1.4.4/memcached.c	Fri Nov 27 08:45:13 2009
 +++ repcached-2.2-1.4.4/memcached.c	Wed Feb 10 16:08:37 2010
 @@ -102,6 +102,30 @@
@@ -1273,7 +1261,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/memcached.c repcached-2.2-1.4.4/memcach
 +    return(0);
 +}
 +#endif /* USE_REPLICATION */
-diff -urN --exclude *.m4 memcached-1.4.4/memcached.h repcached-2.2-1.4.4/memcached.h
 --- memcached-1.4.4/memcached.h	Thu Nov 26 03:37:49 2009
 +++ repcached-2.2-1.4.4/memcached.h	Tue Feb  9 23:02:45 2010
 @@ -144,7 +144,13 @@
@@ -1335,8 +1322,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/memcached.h repcached-2.2-1.4.4/memcach
  
  /*
   * Functions such as the libevent-related calls that need to do cross-thread
-diff -urN --exclude *.m4 memcached-1.4.4/memcached.spec repcached-2.2-1.4.4/memcached.spec
-diff -urN --exclude *.m4 memcached-1.4.4/replication.c repcached-2.2-1.4.4/replication.c
 --- memcached-1.4.4/replication.c	Thu Jan  1 03:00:00 1970
 +++ repcached-2.2-1.4.4/replication.c	Wed Feb 10 18:40:48 2010
 @@ -0,0 +1,355 @@
@@ -1695,7 +1680,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/replication.c repcached-2.2-1.4.4/repli
 +        return(0);
 +    }
 +}
-diff -urN --exclude *.m4 memcached-1.4.4/replication.h repcached-2.2-1.4.4/replication.h
 --- memcached-1.4.4/replication.h	Thu Jan  1 03:00:00 1970
 +++ repcached-2.2-1.4.4/replication.h	Wed Feb 10 18:40:31 2010
 @@ -0,0 +1,42 @@
@@ -1741,7 +1725,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/replication.h repcached-2.2-1.4.4/repli
 +int replication(enum CMD_TYPE type, R_CMD *cmd);
 +
 +#endif
-diff -urN --exclude *.m4 memcached-1.4.4/t/binary.t repcached-2.2-1.4.4/t/binary.t
 --- memcached-1.4.4/t/binary.t	Fri Nov 27 08:05:16 2009
 +++ repcached-2.2-1.4.4/t/binary.t	Wed Feb 10 17:04:01 2010
 @@ -2,10 +2,12 @@
@@ -1758,7 +1741,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/t/binary.t repcached-2.2-1.4.4/t/binary
  
  my $server = new_memcached();
  ok($server, "started the server");
-diff -urN --exclude *.m4 memcached-1.4.4/t/issue_67.t repcached-2.2-1.4.4/t/issue_67.t
 --- memcached-1.4.4/t/issue_67.t	Sun Nov  1 01:44:09 2009
 +++ repcached-2.2-1.4.4/t/issue_67.t	Wed Feb 10 17:50:12 2010
 @@ -41,6 +41,10 @@
@@ -1772,7 +1754,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/t/issue_67.t repcached-2.2-1.4.4/t/issu
      my $childpid = fork();
  
      my $cmd = "$builddir/timedrun 10 $exe $args";
-diff -urN --exclude *.m4 memcached-1.4.4/t/lib/MemcachedTest.pm repcached-2.2-1.4.4/t/lib/MemcachedTest.pm
 --- memcached-1.4.4/t/lib/MemcachedTest.pm	Fri Oct 30 04:24:52 2009
 +++ repcached-2.2-1.4.4/t/lib/MemcachedTest.pm	Wed Feb 10 17:53:34 2010
 @@ -13,7 +13,8 @@
@@ -1819,7 +1800,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/t/lib/MemcachedTest.pm repcached-2.2-1.
      }
  
      my $childpid = fork();
-diff -urN --exclude *.m4 memcached-1.4.4/t/stats.t repcached-2.2-1.4.4/t/stats.t
 --- memcached-1.4.4/t/stats.t	Thu Nov 26 03:37:49 2009
 +++ repcached-2.2-1.4.4/t/stats.t	Tue Feb  9 23:13:26 2010
 @@ -56,7 +56,11 @@
@@ -1835,7 +1815,6 @@ diff -urN --exclude *.m4 memcached-1.4.4/t/stats.t repcached-2.2-1.4.4/t/stats.t
  
  # Test initial state
  foreach my $key (qw(curr_items total_items bytes cmd_get cmd_set get_hits evictions get_misses
-diff -urN --exclude *.m4 memcached-1.4.4/testapp.c repcached-2.2-1.4.4/testapp.c
 --- memcached-1.4.4/testapp.c	Wed Nov 25 03:40:29 2009
 +++ repcached-2.2-1.4.4/testapp.c	Wed Feb 10 17:52:05 2010
 @@ -300,6 +300,10 @@
