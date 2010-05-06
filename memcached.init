@@ -31,49 +31,64 @@ fi
 
 start() {
 	# Check if the service is already running?
-	if [ ! -f /var/lock/subsys/memcached ]; then
-		local listen ip port ret=0
-		for listen in $LISTEN; do
-			ip=${listen%:*}
-			port=${listen##*:}
-			msg_starting "memcached ($ip:$port)"
-			pidfile=/var/run/memcached/"$ip.$port.pid"
-			daemon --pidfile $pidfile --user $MEMCACHED_RUNAS \
-				/usr/sbin/memcached -d -P $pidfile -l $ip -p $port \
-				-m $MEMUSAGE -c $MAXCONN -u $MEMCACHED_RUNAS $MEMCACHED_OPTS
-			ret=$?
-			[ $ret = 0 ] || RETVAL=$?
-		done
-		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/memcached
-	else
-		msg_already_running memcached
+	if [ -f /var/lock/subsys/memcached ]; then
+		msg_already_running "memcached"
+		return
 	fi
+
+	local listen ip port ret=0
+	for listen in $LISTEN; do
+		ip=${listen%:*}
+		port=${listen##*:}
+		msg_starting "memcached ($ip:$port)"
+		pidfile=/var/run/memcached/"$ip.$port.pid"
+		daemon --pidfile $pidfile --user $MEMCACHED_RUNAS \
+			/usr/sbin/memcached -d -P $pidfile -l $ip -p $port \
+			-m $MEMUSAGE -c $MAXCONN -u $MEMCACHED_RUNAS $MEMCACHED_OPTS
+		ret=$?
+		[ $ret = 0 ] || RETVAL=$?
+	done
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/memcached
 }
 
 stop() {
-	if [ -f /var/lock/subsys/memcached ]; then
-		local listen ip port
-		for listen in $LISTEN; do
-			ip=${listen%:*}
-			port=${listen##*:}
-			msg_stopping "memcached ($ip:$port)"
-			pidfile=/var/run/memcached/"$ip.$port.pid"
-			killproc --pidfile $pidfile memcached
-		done
-		rm -f /var/lock/subsys/memcached >/dev/null 2>&1
-	else
-		msg_not_running memcached
+	if [ ! -f /var/lock/subsys/memcached ]; then
+		msg_not_running "memcached"
+		return
 	fi
+
+	local listen ip port
+	for listen in $LISTEN; do
+		ip=${listen%:*}
+		port=${listen##*:}
+		msg_stopping "memcached ($ip:$port)"
+		pidfile=/var/run/memcached/"$ip.$port.pid"
+		killproc --pidfile $pidfile memcached
+	done
+	rm -f /var/lock/subsys/memcached >/dev/null 2>&1
 }
 
 condrestart() {
-	if [ -f /var/lock/subsys/memcached ]; then
-		stop
-		start
-	else
-		msg_not_running memcached
+	if [ ! -f /var/lock/subsys/memcached ]; then
+		msg_not_running "memcached"
 		RETVAL=$1
+		return
 	fi
+
+	stop
+	start
+}
+
+reload() {
+	if [ ! -f /var/lock/subsys/memcached ]; then
+		msg_not_running "memcached"
+		RETVAL=7
+		return
+	fi
+
+	msg_reloading "memcached"
+	killproc memcached -HUP
+	RETVAL=$?
 }
 
 RETVAL=0
@@ -93,14 +108,7 @@ case "$1" in
 	condrestart 0
 	;;
   reload|force-reload)
-	if [ -f /var/lock/subsys/memcached ]; then
-		msg_reloading memcached
-		killproc memcached -HUP
-		RETVAL=$?
-	else
-		msg_not_running memcached
-		RETVAL=7
-	fi
+  	reload
 	;;
   status)
 	status memcached
