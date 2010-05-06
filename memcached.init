@@ -86,9 +86,15 @@ reload() {
 		return
 	fi
 
-	msg_reloading "memcached"
-	killproc memcached -HUP
-	RETVAL=$?
+	local listen ip port
+	for listen in $LISTEN; do
+		ip=${listen%:*}
+		port=${listen##*:}
+		msg_reloading "memcached ($ip:$port)"
+		pidfile=/var/run/memcached/"$ip.$port.pid"
+		killproc --pidfile $pidfile memcached -HUP
+		RETVAL=$((RETVAL + $?))
+	done
 }
 
 RETVAL=0
