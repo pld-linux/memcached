@@ -1261,8 +1261,8 @@
 +    return(0);
 +}
 +#endif /* USE_REPLICATION */
---- memcached-1.4.4/memcached.h	Thu Nov 26 03:37:49 2009
-+++ repcached-2.2-1.4.4/memcached.h	Tue Feb  9 23:02:45 2010
+--- memcached-1.4.5/memcached.h~	2010-05-06 14:09:51.000000000 +0300
++++ memcached-1.4.5/memcached.h	2010-05-06 14:10:13.518051741 +0300
 @@ -144,7 +144,13 @@
      conn_swallow,    /**< swallowing unnecessary bytes w/o storing */
      conn_closing,    /**< closing this connection */
@@ -1278,10 +1278,10 @@
  };
  
  enum bin_substates {
-@@ -240,7 +246,9 @@
-     uint64_t      get_hits;
+@@ -247,7 +247,9 @@
      uint64_t      get_misses;
      uint64_t      evictions;
+     uint64_t      reclaimed;
 +#if 0
      time_t        started;          /* when the process was started */
 +#endif
@@ -1725,22 +1725,23 @@
 +int replication(enum CMD_TYPE type, R_CMD *cmd);
 +
 +#endif
---- memcached-1.4.4/t/binary.t	Fri Nov 27 08:05:16 2009
-+++ repcached-2.2-1.4.4/t/binary.t	Wed Feb 10 17:04:01 2010
-@@ -2,10 +2,12 @@
+--- memcached-1.4.5/t/binary.t~	2010-04-03 10:07:16.000000000 +0300
++++ memcached-1.4.5/t/binary.t	2010-05-06 14:13:25.718440750 +0300
+@@ -2,11 +2,13 @@
  
  use strict;
  use warnings;
--use Test::More tests => 3349;
+-use Test::More tests => 3361;
 +use Test::More;
  use FindBin qw($Bin);
  use lib "$Bin/lib";
  use MemcachedTest;
-+
-+Test::More::plan(tests => support_replication() ? 3385 : 3349);
  
++Test::More::plan(tests => 3361 + (support_replication() ? 36 : 0));
++
  my $server = new_memcached();
  ok($server, "started the server");
+ 
 --- memcached-1.4.4/t/issue_67.t	Sun Nov  1 01:44:09 2009
 +++ repcached-2.2-1.4.4/t/issue_67.t	Wed Feb 10 17:50:12 2010
 @@ -41,6 +41,10 @@
@@ -1800,18 +1801,15 @@
      }
  
      my $childpid = fork();
---- memcached-1.4.4/t/stats.t	Thu Nov 26 03:37:49 2009
-+++ repcached-2.2-1.4.4/t/stats.t	Tue Feb  9 23:13:26 2010
-@@ -56,7 +56,11 @@
+--- memcached-1.4.5/t/stats.t~	2010-04-03 10:07:16.000000000 +0300
++++ memcached-1.4.5/t/stats.t	2010-05-06 14:15:28.521352735 +0300
+@@ -57,7 +57,8 @@
  my $stats = mem_stats($sock);
  
  # Test number of keys
--is(scalar(keys(%$stats)), 37, "37 stats values");
-+if (! support_replication()) {
-+    is(scalar(keys(%$stats)), 37, "37 stats values");
-+} else {
-+    is(scalar(keys(%$stats)), 40, "40 stats values");
-+}
+-is(scalar(keys(%$stats)), 38, "38 stats values");
++my $keys = 38 + (support_replication() ? 3 : 0);
++is(scalar(keys(%$stats)), $keys, "$keys stats values");
  
  # Test initial state
  foreach my $key (qw(curr_items total_items bytes cmd_get cmd_set get_hits evictions get_misses
