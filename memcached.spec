@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_with		repcached		# repcached support, http://repcached.lab.klab.org/
+
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
@@ -10,6 +14,7 @@ Source0:	http://memcached.googlecode.com/files/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://memcached.org/
+Patch0:		repcached.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libevent-devel >= 1.1
@@ -34,6 +39,7 @@ Rozproszony, wysokiej wydajności system cache'owania obiektów.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__aclocal}
@@ -41,6 +47,7 @@ Rozproszony, wysokiej wydajności system cache'owania obiektów.
 %{__autoheader}
 %{__automake}
 %configure \
+	%{?with_repcached:--enable-replication} \
 	--disable-coverage
 %{__make}
 
@@ -49,11 +56,11 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{rc.d/init.d,sysconfig},/var/run/memcached}
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man1}
 
-install memcached $RPM_BUILD_ROOT%{_sbindir}
-install doc/memcached.1 $RPM_BUILD_ROOT%{_mandir}/man1
+install -p memcached $RPM_BUILD_ROOT%{_sbindir}
+cp -a doc/memcached.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
+install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+cp -a %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 %pre
 %groupadd -g 209 %{name}
