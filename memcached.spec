@@ -13,6 +13,7 @@ Source0:	http://memcached.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	50ee313639531d4d2f8eb9c688f58948
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
+Source3:	%{name}.tmpfiles
 URL:		http://memcached.org/
 Patch0:		repcached.patch
 BuildRequires:	autoconf
@@ -54,13 +55,16 @@ Rozproszony, wysokiej wydajności system cache'owania obiektów.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{rc.d/init.d,sysconfig},/var/run/memcached} \
-	$RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man1}
+	$RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man1} \
+	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
 install -p memcached $RPM_BUILD_ROOT%{_sbindir}
 cp -p doc/memcached.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
+
+install %{SOURCE3} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
 
 %pre
 %groupadd -g 209 %{name}
@@ -93,3 +97,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/%{name}
 %{_mandir}/man1/memcached.1*
 %dir %attr(770,root,memcached) /var/run/memcached
+/usr/lib/tmpfiles.d/%{name}.conf
