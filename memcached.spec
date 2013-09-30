@@ -1,4 +1,7 @@
 #
+# NOTE
+# - release notes: https://code.google.com/p/memcached/wiki/ReleaseNotes
+
 # Conditional build:
 %bcond_with		repcached		# repcached support, http://repcached.lab.klab.org/
 
@@ -20,6 +23,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libevent-devel >= 1.1
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	sed >= 4.0
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
@@ -42,6 +46,8 @@ Rozproszony, wysokiej wydajności system cache'owania obiektów.
 %setup -q
 %{?with_repcached:%patch0 -p1}
 
+sed -nie '1,/^$/p' ChangeLog
+
 %build
 %{__aclocal}
 %{__autoconf}
@@ -56,7 +62,7 @@ Rozproszony, wysokiej wydajności system cache'owania obiektów.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{rc.d/init.d,sysconfig},/var/run/memcached} \
 	$RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man1} \
-	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
+	$RPM_BUILD_ROOT%{systemdtmpfilesdir}
 
 install -p memcached $RPM_BUILD_ROOT%{_sbindir}
 cp -p doc/memcached.1 $RPM_BUILD_ROOT%{_mandir}/man1
@@ -64,7 +70,7 @@ cp -p doc/memcached.1 $RPM_BUILD_ROOT%{_mandir}/man1
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
-install %{SOURCE3} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
+install %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 %pre
 %groupadd -g 209 %{name}
@@ -91,10 +97,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS README.md doc/*.txt
+%doc AUTHORS README.md ChangeLog doc/*.txt
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_sbindir}/%{name}
 %{_mandir}/man1/memcached.1*
 %dir %attr(770,root,memcached) /var/run/memcached
-/usr/lib/tmpfiles.d/%{name}.conf
+%{systemdtmpfilesdir}/%{name}.conf
