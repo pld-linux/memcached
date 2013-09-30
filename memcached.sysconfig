@@ -20,3 +20,6 @@ LISTEN="127.0.0.1:11211"
 
 # other options not defined earlier
 #MEMCACHED_OPTS=""
+
+# Set ulimit at least as high as MAXCONN
+#SERVICE_LIMITS="-n $MAXCONN"
