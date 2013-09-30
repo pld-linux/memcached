@@ -5,12 +5,12 @@
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
-Version:	1.4.13
-Release:	2
+Version:	1.4.15
+Release:	1
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://memcached.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	6d18c6d25da945442fcc1187b3b63b7f
+# Source0-md5:	36ea966f5a29655be1746bf4949f7f69
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.tmpfiles
@@ -68,7 +68,7 @@ install %{SOURCE3} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
 
 %pre
 %groupadd -g 209 %{name}
-%useradd -u 209 -d /usr/share/empty -g %{name} -c "Memcached User" %{name}
+%useradd -u 209 -d /usr/share/empty -g %{name} -c "Memcached Daemon" %{name}
 
 %post
 /sbin/chkconfig --add %{name}
@@ -91,7 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS README doc/*.txt
+%doc AUTHORS README.md doc/*.txt
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_sbindir}/%{name}
