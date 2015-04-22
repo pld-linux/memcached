@@ -7,12 +7,12 @@
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
-Version:	1.4.20
+Version:	1.4.23
 Release:	1
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://www.memcached.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	92f702bcb28d7bec8fdf9418360fc062
+# Source0-md5:	7a844e4c760914c56fc9211eeb40314e
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.tmpfiles
