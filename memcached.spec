@@ -1,5 +1,12 @@
 # NOTE
 # - release notes: https://code.google.com/p/memcached/wiki/ReleaseNotes
+# TODO
+# - fix x32 build failure:
+#items.c: In function 'item_cachedump':
+#items.c:464:24: error: format '%lu' expects argument of type 'long unsigned int', but argument 6 has type 'time_t' [-Werror=format=]
+#                        (unsigned long)it->exptime + process_started);
+#                        ^
+#items.c:464:24: error: format '%lu' expects argument of type 'long unsigned int', but argument 6 has type 'time_t' [-Werror=format=]
 
 # Conditional build:
 %bcond_with		repcached		# repcached support, http://repcached.lab.klab.org/
@@ -7,12 +14,12 @@
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
-Version:	1.4.23
-Release:	1
+Version:	1.4.24
+Release:	0.1
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://www.memcached.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	7a844e4c760914c56fc9211eeb40314e
+# Source0-md5:	4d6e8c90e2068580526c7579dd7f37f6
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.tmpfiles
