@@ -2,11 +2,11 @@
 # - release notes: https://github.com/memcached/memcached/wiki/ReleaseNotes
 # TODO
 # - fix x32 build failure:
-#items.c: In function 'item_cachedump':
-#items.c:464:24: error: format '%lu' expects argument of type 'long unsigned int', but argument 6 has type 'time_t' [-Werror=format=]
-#                        (unsigned long)it->exptime + process_started);
-#                        ^
-#items.c:464:24: error: format '%lu' expects argument of type 'long unsigned int', but argument 6 has type 'time_t' [-Werror=format=]
+#crawler.c: In function 'crawler_metadump_eval':
+#crawler.c:229:13: warning: format '%ld' expects argument of type 'long int', but argument 5 has type 'time_t {aka long long int}' [-Wformat=]
+#             "key=%s exp=%ld la=%llu cas=%llu fetch=%s\n",
+#             ^
+#crawler.c:229:13: warning: format '%ld' expects argument of type 'long int', but argument 5 has type 'time_t {aka long long int}' [-Wformat=]
 
 # Conditional build:
 %bcond_with		repcached		# repcached support, http://repcached.lab.klab.org/
@@ -15,7 +15,7 @@ Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
 Version:	1.4.33
-Release:	0.1
+Release:	1
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://www.memcached.org/files/%{name}-%{version}.tar.gz
@@ -53,6 +53,10 @@ Rozproszony, wysokiej wydajności system cache'owania obiektów.
 %{?with_repcached:%patch0 -p1}
 
 sed -nie '1,/^$/p' ChangeLog
+
+%ifarch x32
+%{__sed} -i -e 's/-Werror//' configure.ac
+%endif
 
 %build
 %{__aclocal}
