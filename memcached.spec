@@ -1,5 +1,5 @@
 # NOTE
-# - release notes: https://code.google.com/p/memcached/wiki/ReleaseNotes
+# - release notes: https://github.com/memcached/memcached/wiki/ReleaseNotes
 # TODO
 # - fix x32 build failure:
 #items.c: In function 'item_cachedump':
@@ -14,12 +14,12 @@
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
-Version:	1.4.24
+Version:	1.4.33
 Release:	0.1
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://www.memcached.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	4d6e8c90e2068580526c7579dd7f37f6
+# Source0-md5:	2d7f6476283cd36e21e521d901d37a8f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.tmpfiles
