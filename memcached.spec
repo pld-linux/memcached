@@ -42,11 +42,22 @@ Provides:	group(memcached)
 Provides:	user(memcached)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_bindir	%{_sbindir}
+
 %description
 A high-performance, distributed memory object caching system.
 
 %description -l pl.UTF-8
 Rozproszony, wysokiej wydajności system cache'owania obiektów.
+
+%package devel
+Summary:	Files needed for development using memcached protocol
+Group:		Development/Libraries
+# does not require base
+
+%description devel
+Install memcached-devel if you are developing C/C++ applications that
+require access to the memcached binary include files.
 
 %prep
 %setup -q
@@ -71,16 +82,15 @@ sed -nie '1,/^$/p' ChangeLog
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{rc.d/init.d,sysconfig},/var/run/memcached} \
-	$RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man1} \
 	$RPM_BUILD_ROOT%{systemdtmpfilesdir}
 
-install -p memcached $RPM_BUILD_ROOT%{_sbindir}
-cp -p doc/memcached.1 $RPM_BUILD_ROOT%{_mandir}/man1
+%{__make} install \
+	INSTALL="%{__install} -p" \
+	DESTDIR=$RPM_BUILD_ROOT
 
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
-
-install %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
+cp -p %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 %pre
 %groupadd -g 209 %{name}
@@ -114,3 +124,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/memcached.1*
 %dir %attr(770,root,memcached) /var/run/memcached
 %{systemdtmpfilesdir}/%{name}.conf
+
+%files devel
+%defattr(644,root,root,755)
+%{_includedir}/%{name}
