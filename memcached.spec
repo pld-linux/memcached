@@ -8,23 +8,19 @@
 #             ^
 #crawler.c:229:13: warning: format '%ld' expects argument of type 'long int', but argument 5 has type 'time_t {aka long long int}' [-Wformat=]
 
-# Conditional build:
-%bcond_with		repcached		# repcached support, http://repcached.lab.klab.org/
-
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
-Version:	1.4.33
-Release:	2
+Version:	1.4.36
+Release:	1
 License:	BSD
 Group:		Networking/Daemons
 Source0:	http://www.memcached.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	2d7f6476283cd36e21e521d901d37a8f
+# Source0-md5:	1e028fbab7288911fcaa5ed2a21817fe
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.tmpfiles
-URL:		http://memcached.org/
-Patch0:		repcached.patch
+URL:		https://memcached.org/about
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libevent-devel >= 1.1
@@ -61,7 +57,6 @@ require access to the memcached binary include files.
 
 %prep
 %setup -q
-%{?with_repcached:%patch0 -p1}
 
 sed -nie '1,/^$/p' ChangeLog
 
