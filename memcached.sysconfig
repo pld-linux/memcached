@@ -19,7 +19,10 @@ SERVICE_RUN_NICE_LEVEL="+0"
 LISTEN="127.0.0.1:11211"
 
 # other options not defined earlier
-#MEMCACHED_OPTS=""
+
+# -U 0 to disable UDP listen:
+#      https://blog.cloudflare.com/memcrashed-major-amplification-attacks-from-port-11211/
+MEMCACHED_OPTS="-U 0"
 
 # Set ulimit at least as high as MAXCONN
 #SERVICE_LIMITS="-n $MAXCONN"
