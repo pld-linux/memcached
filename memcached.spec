@@ -11,15 +11,16 @@
 Summary:	A high-performance, distributed memory object caching system
 Summary(pl.UTF-8):	Rozproszony, wysokiej wydajności system cache'owania obiektów
 Name:		memcached
-Version:	1.5.20
-Release:	2
+Version:	1.6.40
+Release:	1
 License:	BSD
 Group:		Networking/Daemons
-Source0:	http://www.memcached.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	4b64296ea0eeccdee9168c035e0488ab
+Source0:	https://www.memcached.org/files/%{name}-%{version}.tar.gz
+# Source0-md5:	9b3b63e2e99182ecb158724ba040ddb4
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.tmpfiles
+Patch0:		%{name}-testapp-redzone.patch
 URL:		https://memcached.org/about
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -57,6 +58,7 @@ require access to the memcached binary include files.
 
 %prep
 %setup -q
+%patch -P0 -p1
 
 sed -nie '1,/^$/p' ChangeLog
 

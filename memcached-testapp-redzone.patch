@@ -1,0 +1,80 @@
+Preserve RPM release flags while keeping testapp cache redzone checks.
+
+--- memcached-1.6.40/Makefile.am.orig
++++ memcached-1.6.40/Makefile.am
+@@ -3,6 +3,7 @@
+ noinst_PROGRAMS = memcached-debug sizes testapp timedrun
+ 
+ BUILT_SOURCES=
++testapp_CPPFLAGS = -DCACHE_REDZONE_TESTING
+ 
+ testapp_SOURCES = testapp.c util.c util.h stats_prefix.c stats_prefix.h jenkins_hash.c murmur3_hash.c hash.h cache.c crc32c.c
+ 
+--- memcached-1.6.40/cache.c.orig
++++ memcached-1.6.40/cache.c
+@@ -4,31 +4,35 @@
+ #include <inttypes.h>
+ #include <assert.h>
+ 
+-#ifndef NDEBUG
++#if !defined(NDEBUG) || defined(CACHE_REDZONE_TESTING)
+ #include <signal.h>
+ #endif
+ 
+ #include "cache.h"
+ 
+-#ifndef NDEBUG
++#if !defined(NDEBUG) || defined(CACHE_REDZONE_TESTING)
++#define CACHE_REDZONE_ENABLED 1
++#endif
++
++#ifdef CACHE_REDZONE_ENABLED
+ const uint64_t redzone_pattern = 0xdeadbeefcafedeed;
+ int cache_error = 0;
+ #endif
+ 
+ cache_t* cache_create(const char *name, size_t bufsize, size_t align) {
+     cache_t* ret = calloc(1, sizeof(cache_t));
+     char* nm = strdup(name);
+     if (ret == NULL || nm == NULL ||
+         pthread_mutex_init(&ret->mutex, NULL) == -1) {
+         free(ret);
+         free(nm);
+         return NULL;
+     }
+ 
+     ret->name = nm;
+     STAILQ_INIT(&ret->head);
+ 
+-#ifndef NDEBUG
++#ifdef CACHE_REDZONE_ENABLED
+     ret->bufsize = bufsize + 2 * sizeof(redzone_pattern);
+ #else
+     ret->bufsize = bufsize;
+@@ -45,7 +49,7 @@
+ }
+ 
+ static inline void* get_object(void *ptr) {
+-#ifndef NDEBUG
++#ifdef CACHE_REDZONE_ENABLED
+     uint64_t *pre = ptr;
+     return pre + 1;
+ #else
+@@ -94,7 +98,7 @@
+         object = NULL;
+     }
+ 
+-#ifndef NDEBUG
++#ifdef CACHE_REDZONE_ENABLED
+     if (object != NULL) {
+         /* add a simple form of buffer-check */
+         uint64_t *pre = ret;
+@@ -114,7 +118,7 @@
+ }
+ 
+ void do_cache_free(cache_t *cache, void *ptr) {
+-#ifndef NDEBUG
++#ifdef CACHE_REDZONE_ENABLED
+     /* validate redzone... */
+     if (memcmp(((char*)ptr) + cache->bufsize - (2 * sizeof(redzone_pattern)),
+                &redzone_pattern, sizeof(redzone_pattern)) != 0) {
